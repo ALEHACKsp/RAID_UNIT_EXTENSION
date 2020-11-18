@@ -1,0 +1,821 @@
+kd> u storport!RaidUnitRegisterInterfaces
+storport!RaidUnitRegisterInterfaces:
+fffff800`82b59810 48895c2418      mov     qword ptr [rsp+18h],rbx
+fffff800`82b59815 55              push    rbp
+fffff800`82b59816 56              push    rsi
+fffff800`82b59817 57              push    rdi
+fffff800`82b59818 4883ec50        sub     rsp,50h
+fffff800`82b5981c 8b4150          mov     eax,dword ptr [rcx+50h]
+fffff800`82b5981f 488b5110        mov     rdx,qword ptr [rcx+10h]
+fffff800`82b59823 488bf9          mov     rdi,rcx
+
+
+kd> u disk!DiskEnableDisableFailurePrediction
+disk!DiskEnableDisableFailurePrediction:
+fffff800`83325a20 48895c2408      mov     qword ptr [rsp+8],rbx
+fffff800`83325a25 57              push    rdi
+fffff800`83325a26 4883ec20        sub     rsp,20h
+fffff800`83325a2a 488b5960        mov     rbx,qword ptr [rcx+60h]
+fffff800`83325a2e 408afa          mov     dil,dl
+fffff800`83325a31 448b8398000000  mov     r8d,dword ptr [rbx+98h]
+fffff800`83325a38 41ffc8          dec     r8d
+fffff800`83325a3b 742f            je      disk!DiskEnableDisableFailurePrediction+0x4c (fffff800`83325a6c)
+
+
+kd> dt storport!_RAID_UNIT_EXTENSION -b
+   +0x000 ObjectType       : 
+      RaidUnknownObject = 0n-1
+      RaidAdapterObject = 0n0
+      RaidUnitObject = 0n1
+      RaidDriverObject = 0n2
+   +0x008 DeviceObject     : Ptr64 
+   +0x010 Adapter          : Ptr64 
+   +0x018 SlowLock         : Uint8B
+   +0x020 DeviceState      : 
+      DeviceStateNotPresent = 0n0
+      DeviceStateWorking = 0n1
+      DeviceStateStopped = 0n2
+      DeviceStatePendingStop = 0n3
+      DeviceStatePendingRemove = 0n4
+      DeviceStateSurpriseRemoval = 0n5
+      DeviceStateDeleted = 0n6
+      DeviceStateDisabled = 0n7
+      DeviceStateNoResource = 0n8
+   +0x028 NextUnit         : _LIST_ENTRY
+      +0x000 Flink            : Ptr64 
+      +0x008 Blink            : Ptr64 
+   +0x038 UnitTableLink    : _LIST_ENTRY
+      +0x000 Flink            : Ptr64 
+      +0x008 Blink            : Ptr64 
+   +0x048 StorAddressBTL8  : _STOR_ADDR_BTL8
+      +0x000 Type             : Uint2B
+      +0x002 Port             : Uint2B
+      +0x004 AddressLength    : Uint4B
+      +0x008 Path             : UChar
+      +0x009 Target           : UChar
+      +0x00a Lun              : UChar
+      +0x00b Reserved         : UChar
+   +0x048 AddressType      : Uint2B
+   +0x04a AddressPort      : Uint2B
+   +0x04c AddressLength    : Uint4B
+   +0x050 Address          : _STOR_SCSI_ADDRESS
+      +0x000 PathId           : UChar
+      +0x001 TargetId         : UChar
+      +0x002 Lun              : UChar
+      +0x003 Reserved         : UChar
+   +0x058 Identity         : _STOR_SCSI_IDENTITY
+      +0x000 InquiryData      : Ptr64 
+      +0x008 SerialNumber     : _STRING
+         +0x000 Length           : Uint2B
+         +0x002 MaximumLength    : Uint2B
+         +0x008 Buffer           : Ptr64 
+      +0x018 Supports1667     : UChar
+      +0x020 DeviceId         : Ptr64 
+      +0x028 AtaDeviceId      : Ptr64 
+   +0x088 Flags            : <unnamed-tag>
+      +0x000 DeviceClaimed    : Pos 0, 1 Bit
+      +0x000 Enumerated       : Pos 1, 1 Bit
+      +0x000 Present          : Pos 2, 1 Bit
+      +0x000 Temporary        : Pos 3, 1 Bit
+      +0x000 WmiInitialized   : Pos 4, 1 Bit
+      +0x000 Zombie           : Pos 5, 1 Bit
+      +0x000 RescanNeeded     : Pos 6, 1 Bit
+      +0x000 PoweringUp       : Pos 7, 1 Bit
+      +0x001 PoweringDown     : Pos 0, 1 Bit
+      +0x001 D3ColdSupported  : Pos 1, 1 Bit
+      +0x001 D3ColdEnabled    : Pos 2, 1 Bit
+      +0x001 ActiveReferenceOnAdapter : Pos 3, 1 Bit
+      +0x001 DeviceInitialized : Pos 4, 1 Bit
+      +0x001 DisabledPendingTimer : Pos 5, 1 Bit
+      +0x001 DumpActiveNotCapable : Pos 6, 1 Bit
+      +0x001 RegisteredForPoFx : Pos 7, 1 Bit
+      +0x002 BootUnit         : Pos 0, 1 Bit
+      +0x004 Reserved         : Pos 0, 15 Bits
+   +0x090 ZeroOutstandingEvent : _KEVENT
+      +0x000 Header           : _DISPATCHER_HEADER
+         +0x000 Lock             : Int4B
+         +0x000 LockNV           : Int4B
+         +0x000 Type             : UChar
+         +0x001 Signalling       : UChar
+         +0x002 Size             : UChar
+         +0x003 Reserved1        : UChar
+         +0x000 TimerType        : UChar
+         +0x001 TimerControlFlags : UChar
+         +0x001 Absolute         : Pos 0, 1 Bit
+         +0x001 Wake             : Pos 1, 1 Bit
+         +0x001 EncodedTolerableDelay : Pos 2, 6 Bits
+         +0x002 Hand             : UChar
+         +0x003 TimerMiscFlags   : UChar
+         +0x003 Index            : Pos 0, 6 Bits
+         +0x003 Inserted         : Pos 6, 1 Bit
+         +0x003 Expired          : Pos 7, 1 Bit
+         +0x000 Timer2Type       : UChar
+         +0x001 Timer2Flags      : UChar
+         +0x001 Timer2Inserted   : Pos 0, 1 Bit
+         +0x001 Timer2Expiring   : Pos 1, 1 Bit
+         +0x001 Timer2CancelPending : Pos 2, 1 Bit
+         +0x001 Timer2SetPending : Pos 3, 1 Bit
+         +0x001 Timer2Running    : Pos 4, 1 Bit
+         +0x001 Timer2Disabled   : Pos 5, 1 Bit
+         +0x001 Timer2ReservedFlags : Pos 6, 2 Bits
+         +0x002 Timer2Reserved1  : UChar
+         +0x003 Timer2Reserved2  : UChar
+         +0x000 QueueType        : UChar
+         +0x001 QueueControlFlags : UChar
+         +0x001 Abandoned        : Pos 0, 1 Bit
+         +0x001 DisableIncrement : Pos 1, 1 Bit
+         +0x001 QueueReservedControlFlags : Pos 2, 6 Bits
+         +0x002 QueueSize        : UChar
+         +0x003 QueueReserved    : UChar
+         +0x000 ThreadType       : UChar
+         +0x001 ThreadReserved   : UChar
+         +0x002 ThreadControlFlags : UChar
+         +0x002 CycleProfiling   : Pos 0, 1 Bit
+         +0x002 CounterProfiling : Pos 1, 1 Bit
+         +0x002 GroupScheduling  : Pos 2, 1 Bit
+         +0x002 AffinitySet      : Pos 3, 1 Bit
+         +0x002 ThreadReservedControlFlags : Pos 4, 4 Bits
+         +0x003 DebugActive      : UChar
+         +0x003 ActiveDR7        : Pos 0, 1 Bit
+         +0x003 Instrumented     : Pos 1, 1 Bit
+         +0x003 Minimal          : Pos 2, 1 Bit
+         +0x003 Reserved4        : Pos 3, 3 Bits
+         +0x003 UmsScheduled     : Pos 6, 1 Bit
+         +0x003 UmsPrimary       : Pos 7, 1 Bit
+         +0x000 MutantType       : UChar
+         +0x001 MutantSize       : UChar
+         +0x002 DpcActive        : UChar
+         +0x003 MutantReserved   : UChar
+         +0x004 SignalState      : Int4B
+         +0x008 WaitListHead     : _LIST_ENTRY
+            +0x000 Flink            : Ptr64 
+            +0x008 Blink            : Ptr64 
+   +0x0a8 OutstandingCount : Int4B
+   +0x0ac PagingPathCount  : Uint4B
+   +0x0b0 CrashDumpPathCount : Uint4B
+   +0x0b4 HiberPathCount   : Uint4B
+   +0x0c0 TagList          : _QUEUE_TAG_LIST
+      +0x000 Header           : _SLIST_HEADER
+         +0x000 Alignment        : Uint8B
+         +0x008 Region           : Uint8B
+         +0x000 HeaderX64        : <unnamed-tag>
+            +0x000 Depth            : Pos 0, 16 Bits
+            +0x000 Sequence         : Pos 16, 48 Bits
+            +0x008 Reserved         : Pos 0, 4 Bits
+            +0x008 NextEntry        : Pos 4, 60 Bits
+      +0x010 Buffer           : Ptr64 
+   +0x0e0 IoQueue          : _IO_QUEUE
+      +0x000 DeviceObject     : Ptr64 
+      +0x008 StartIo          : Ptr64 
+      +0x010 DeviceQueue      : _EXTENDED_DEVICE_QUEUE
+         +0x000 Type             : Int2B
+         +0x002 Size             : Int2B
+         +0x008 Gateway          : Ptr64 
+         +0x010 DeviceList       : _LIST_ENTRY
+            +0x000 Flink            : Ptr64 
+            +0x008 Blink            : Ptr64 
+         +0x020 ByPassList       : _LIST_ENTRY
+            +0x000 Flink            : Ptr64 
+            +0x008 Blink            : Ptr64 
+         +0x030 Lock             : Uint8B
+         +0x038 Depth            : Int4B
+         +0x03c OutstandingCount : Int4B
+         +0x040 DeviceCount      : Int4B
+         +0x044 ByPassCount      : Int4B
+         +0x048 ByPassPowerCount : Int4B
+         +0x04c PauseCount       : Int4B
+         +0x050 BusyCount        : Int4B
+         +0x054 Frozen           : UChar
+         +0x055 Locked           : UChar
+         +0x056 Untagged         : UChar
+         +0x057 PowerLocked      : UChar
+         +0x058 QuiescenceClients : Uint4B
+         +0x060 QuiescenceEvent  : _KEVENT
+            +0x000 Header           : _DISPATCHER_HEADER
+               +0x000 Lock             : Int4B
+               +0x000 LockNV           : Int4B
+               +0x000 Type             : UChar
+               +0x001 Signalling       : UChar
+               +0x002 Size             : UChar
+               +0x003 Reserved1        : UChar
+               +0x000 TimerType        : UChar
+               +0x001 TimerControlFlags : UChar
+               +0x001 Absolute         : Pos 0, 1 Bit
+               +0x001 Wake             : Pos 1, 1 Bit
+               +0x001 EncodedTolerableDelay : Pos 2, 6 Bits
+               +0x002 Hand             : UChar
+               +0x003 TimerMiscFlags   : UChar
+               +0x003 Index            : Pos 0, 6 Bits
+               +0x003 Inserted         : Pos 6, 1 Bit
+               +0x003 Expired          : Pos 7, 1 Bit
+               +0x000 Timer2Type       : UChar
+               +0x001 Timer2Flags      : UChar
+               +0x001 Timer2Inserted   : Pos 0, 1 Bit
+               +0x001 Timer2Expiring   : Pos 1, 1 Bit
+               +0x001 Timer2CancelPending : Pos 2, 1 Bit
+               +0x001 Timer2SetPending : Pos 3, 1 Bit
+               +0x001 Timer2Running    : Pos 4, 1 Bit
+               +0x001 Timer2Disabled   : Pos 5, 1 Bit
+               +0x001 Timer2ReservedFlags : Pos 6, 2 Bits
+               +0x002 Timer2Reserved1  : UChar
+               +0x003 Timer2Reserved2  : UChar
+               +0x000 QueueType        : UChar
+               +0x001 QueueControlFlags : UChar
+               +0x001 Abandoned        : Pos 0, 1 Bit
+               +0x001 DisableIncrement : Pos 1, 1 Bit
+               +0x001 QueueReservedControlFlags : Pos 2, 6 Bits
+               +0x002 QueueSize        : UChar
+               +0x003 QueueReserved    : UChar
+               +0x000 ThreadType       : UChar
+               +0x001 ThreadReserved   : UChar
+               +0x002 ThreadControlFlags : UChar
+               +0x002 CycleProfiling   : Pos 0, 1 Bit
+               +0x002 CounterProfiling : Pos 1, 1 Bit
+               +0x002 GroupScheduling  : Pos 2, 1 Bit
+               +0x002 AffinitySet      : Pos 3, 1 Bit
+               +0x002 ThreadReservedControlFlags : Pos 4, 4 Bits
+               +0x003 DebugActive      : UChar
+               +0x003 ActiveDR7        : Pos 0, 1 Bit
+               +0x003 Instrumented     : Pos 1, 1 Bit
+               +0x003 Minimal          : Pos 2, 1 Bit
+               +0x003 Reserved4        : Pos 3, 3 Bits
+               +0x003 UmsScheduled     : Pos 6, 1 Bit
+               +0x003 UmsPrimary       : Pos 7, 1 Bit
+               +0x000 MutantType       : UChar
+               +0x001 MutantSize       : UChar
+               +0x002 DpcActive        : UChar
+               +0x003 MutantReserved   : UChar
+               +0x004 SignalState      : Int4B
+               +0x008 WaitListHead     : _LIST_ENTRY
+                  +0x000 Flink            : Ptr64 
+                  +0x008 Blink            : Ptr64 
+      +0x088 QueueChanged     : Uint4B
+   +0x170 MaxQueueDepth    : Uint4B
+   +0x174 OscData          : Uint4B
+   +0x178 PowerupReason    : 
+      StoragePowerupUnknown = 0n0
+      StoragePowerupIO = 0n1
+      StoragePowerupDeviceAttention = 0n2
+   +0x180 AcpiInterface    : ACPI_INTERFACE_STANDARD2
+      +0x000 Size             : Uint2B
+      +0x002 Version          : Uint2B
+      +0x008 Context          : Ptr64 
+      +0x010 InterfaceReference : Ptr64 
+      +0x018 InterfaceDereference : Ptr64 
+      +0x020 GpeConnectVector : Ptr64 
+      +0x028 GpeDisconnectVector : Ptr64 
+      +0x030 GpeEnableEvent   : Ptr64 
+      +0x038 GpeDisableEvent  : Ptr64 
+      +0x040 GpeClearStatus   : Ptr64 
+      +0x048 RegisterForDeviceNotifications : Ptr64 
+      +0x050 UnregisterForDeviceNotifications : Ptr64 
+   +0x1d8 Power            : _RAID_POWER_STATE
+      +0x000 SystemState      : 
+         PowerSystemUnspecified = 0n0
+         PowerSystemWorking = 0n1
+         PowerSystemSleeping1 = 0n2
+         PowerSystemSleeping2 = 0n3
+         PowerSystemSleeping3 = 0n4
+         PowerSystemHibernate = 0n5
+         PowerSystemShutdown = 0n6
+         PowerSystemMaximum = 0n7
+      +0x004 DeviceState      : 
+         PowerDeviceUnspecified = 0n0
+         PowerDeviceD0 = 0n1
+         PowerDeviceD1 = 0n2
+         PowerDeviceD2 = 0n3
+         PowerDeviceD3 = 0n4
+         PowerDeviceMaximum = 0n5
+      +0x008 PowerAction      : 
+         PowerActionNone = 0n0
+         PowerActionReserved = 0n1
+         PowerActionSleep = 0n2
+         PowerActionHibernate = 0n3
+         PowerActionShutdown = 0n4
+         PowerActionShutdownReset = 0n5
+         PowerActionShutdownOff = 0n6
+         PowerActionWarmEject = 0n7
+      +0x00c SystemPoweringDown : UChar
+   +0x1e8 PendingQueue     : _STOR_EVENT_QUEUE
+      +0x000 List             : _LIST_ENTRY
+         +0x000 Flink            : Ptr64 
+         +0x008 Blink            : Ptr64 
+      +0x010 Lock             : Uint8B
+      +0x018 Timeout          : Uint4B
+   +0x208 PendingTimer     : _KTIMER
+      +0x000 Header           : _DISPATCHER_HEADER
+         +0x000 Lock             : Int4B
+         +0x000 LockNV           : Int4B
+         +0x000 Type             : UChar
+         +0x001 Signalling       : UChar
+         +0x002 Size             : UChar
+         +0x003 Reserved1        : UChar
+         +0x000 TimerType        : UChar
+         +0x001 TimerControlFlags : UChar
+         +0x001 Absolute         : Pos 0, 1 Bit
+         +0x001 Wake             : Pos 1, 1 Bit
+         +0x001 EncodedTolerableDelay : Pos 2, 6 Bits
+         +0x002 Hand             : UChar
+         +0x003 TimerMiscFlags   : UChar
+         +0x003 Index            : Pos 0, 6 Bits
+         +0x003 Inserted         : Pos 6, 1 Bit
+         +0x003 Expired          : Pos 7, 1 Bit
+         +0x000 Timer2Type       : UChar
+         +0x001 Timer2Flags      : UChar
+         +0x001 Timer2Inserted   : Pos 0, 1 Bit
+         +0x001 Timer2Expiring   : Pos 1, 1 Bit
+         +0x001 Timer2CancelPending : Pos 2, 1 Bit
+         +0x001 Timer2SetPending : Pos 3, 1 Bit
+         +0x001 Timer2Running    : Pos 4, 1 Bit
+         +0x001 Timer2Disabled   : Pos 5, 1 Bit
+         +0x001 Timer2ReservedFlags : Pos 6, 2 Bits
+         +0x002 Timer2Reserved1  : UChar
+         +0x003 Timer2Reserved2  : UChar
+         +0x000 QueueType        : UChar
+         +0x001 QueueControlFlags : UChar
+         +0x001 Abandoned        : Pos 0, 1 Bit
+         +0x001 DisableIncrement : Pos 1, 1 Bit
+         +0x001 QueueReservedControlFlags : Pos 2, 6 Bits
+         +0x002 QueueSize        : UChar
+         +0x003 QueueReserved    : UChar
+         +0x000 ThreadType       : UChar
+         +0x001 ThreadReserved   : UChar
+         +0x002 ThreadControlFlags : UChar
+         +0x002 CycleProfiling   : Pos 0, 1 Bit
+         +0x002 CounterProfiling : Pos 1, 1 Bit
+         +0x002 GroupScheduling  : Pos 2, 1 Bit
+         +0x002 AffinitySet      : Pos 3, 1 Bit
+         +0x002 ThreadReservedControlFlags : Pos 4, 4 Bits
+         +0x003 DebugActive      : UChar
+         +0x003 ActiveDR7        : Pos 0, 1 Bit
+         +0x003 Instrumented     : Pos 1, 1 Bit
+         +0x003 Minimal          : Pos 2, 1 Bit
+         +0x003 Reserved4        : Pos 3, 3 Bits
+         +0x003 UmsScheduled     : Pos 6, 1 Bit
+         +0x003 UmsPrimary       : Pos 7, 1 Bit
+         +0x000 MutantType       : UChar
+         +0x001 MutantSize       : UChar
+         +0x002 DpcActive        : UChar
+         +0x003 MutantReserved   : UChar
+         +0x004 SignalState      : Int4B
+         +0x008 WaitListHead     : _LIST_ENTRY
+            +0x000 Flink            : Ptr64 
+            +0x008 Blink            : Ptr64 
+      +0x018 DueTime          : _ULARGE_INTEGER
+         +0x000 LowPart          : Uint4B
+         +0x004 HighPart         : Uint4B
+         +0x000 u                : <unnamed-tag>
+            +0x000 LowPart          : Uint4B
+            +0x004 HighPart         : Uint4B
+         +0x000 QuadPart         : Uint8B
+      +0x020 TimerListEntry   : _LIST_ENTRY
+         +0x000 Flink            : Ptr64 
+         +0x008 Blink            : Ptr64 
+      +0x030 Dpc              : Ptr64 
+      +0x038 Processor        : Uint4B
+      +0x03c Period           : Uint4B
+   +0x248 PendingDpc       : _KDPC
+      +0x000 TargetInfoAsUlong : Uint4B
+      +0x000 Type             : UChar
+      +0x001 Importance       : UChar
+      +0x002 Number           : Uint2B
+      +0x008 DpcListEntry     : _SINGLE_LIST_ENTRY
+         +0x000 Next             : Ptr64 
+      +0x010 ProcessorHistory : Uint8B
+      +0x018 DeferredRoutine  : Ptr64 
+      +0x020 DeferredContext  : Ptr64 
+      +0x028 SystemArgument1  : Ptr64 
+      +0x030 SystemArgument2  : Ptr64 
+      +0x038 DpcData          : Ptr64 
+   +0x288 PauseTimer       : _KTIMER
+      +0x000 Header           : _DISPATCHER_HEADER
+         +0x000 Lock             : Int4B
+         +0x000 LockNV           : Int4B
+         +0x000 Type             : UChar
+         +0x001 Signalling       : UChar
+         +0x002 Size             : UChar
+         +0x003 Reserved1        : UChar
+         +0x000 TimerType        : UChar
+         +0x001 TimerControlFlags : UChar
+         +0x001 Absolute         : Pos 0, 1 Bit
+         +0x001 Wake             : Pos 1, 1 Bit
+         +0x001 EncodedTolerableDelay : Pos 2, 6 Bits
+         +0x002 Hand             : UChar
+         +0x003 TimerMiscFlags   : UChar
+         +0x003 Index            : Pos 0, 6 Bits
+         +0x003 Inserted         : Pos 6, 1 Bit
+         +0x003 Expired          : Pos 7, 1 Bit
+         +0x000 Timer2Type       : UChar
+         +0x001 Timer2Flags      : UChar
+         +0x001 Timer2Inserted   : Pos 0, 1 Bit
+         +0x001 Timer2Expiring   : Pos 1, 1 Bit
+         +0x001 Timer2CancelPending : Pos 2, 1 Bit
+         +0x001 Timer2SetPending : Pos 3, 1 Bit
+         +0x001 Timer2Running    : Pos 4, 1 Bit
+         +0x001 Timer2Disabled   : Pos 5, 1 Bit
+         +0x001 Timer2ReservedFlags : Pos 6, 2 Bits
+         +0x002 Timer2Reserved1  : UChar
+         +0x003 Timer2Reserved2  : UChar
+         +0x000 QueueType        : UChar
+         +0x001 QueueControlFlags : UChar
+         +0x001 Abandoned        : Pos 0, 1 Bit
+         +0x001 DisableIncrement : Pos 1, 1 Bit
+         +0x001 QueueReservedControlFlags : Pos 2, 6 Bits
+         +0x002 QueueSize        : UChar
+         +0x003 QueueReserved    : UChar
+         +0x000 ThreadType       : UChar
+         +0x001 ThreadReserved   : UChar
+         +0x002 ThreadControlFlags : UChar
+         +0x002 CycleProfiling   : Pos 0, 1 Bit
+         +0x002 CounterProfiling : Pos 1, 1 Bit
+         +0x002 GroupScheduling  : Pos 2, 1 Bit
+         +0x002 AffinitySet      : Pos 3, 1 Bit
+         +0x002 ThreadReservedControlFlags : Pos 4, 4 Bits
+         +0x003 DebugActive      : UChar
+         +0x003 ActiveDR7        : Pos 0, 1 Bit
+         +0x003 Instrumented     : Pos 1, 1 Bit
+         +0x003 Minimal          : Pos 2, 1 Bit
+         +0x003 Reserved4        : Pos 3, 3 Bits
+         +0x003 UmsScheduled     : Pos 6, 1 Bit
+         +0x003 UmsPrimary       : Pos 7, 1 Bit
+         +0x000 MutantType       : UChar
+         +0x001 MutantSize       : UChar
+         +0x002 DpcActive        : UChar
+         +0x003 MutantReserved   : UChar
+         +0x004 SignalState      : Int4B
+         +0x008 WaitListHead     : _LIST_ENTRY
+            +0x000 Flink            : Ptr64 
+            +0x008 Blink            : Ptr64 
+      +0x018 DueTime          : _ULARGE_INTEGER
+         +0x000 LowPart          : Uint4B
+         +0x004 HighPart         : Uint4B
+         +0x000 u                : <unnamed-tag>
+            +0x000 LowPart          : Uint4B
+            +0x004 HighPart         : Uint4B
+         +0x000 QuadPart         : Uint8B
+      +0x020 TimerListEntry   : _LIST_ENTRY
+         +0x000 Flink            : Ptr64 
+         +0x008 Blink            : Ptr64 
+      +0x030 Dpc              : Ptr64 
+      +0x038 Processor        : Uint4B
+      +0x03c Period           : Uint4B
+   +0x2c8 PauseTimerDpc    : _KDPC
+      +0x000 TargetInfoAsUlong : Uint4B
+      +0x000 Type             : UChar
+      +0x001 Importance       : UChar
+      +0x002 Number           : Uint2B
+      +0x008 DpcListEntry     : _SINGLE_LIST_ENTRY
+         +0x000 Next             : Ptr64 
+      +0x010 ProcessorHistory : Uint8B
+      +0x018 DeferredRoutine  : Ptr64 
+      +0x020 DeferredContext  : Ptr64 
+      +0x028 SystemArgument1  : Ptr64 
+      +0x030 SystemArgument2  : Ptr64 
+      +0x038 DpcData          : Ptr64 
+   +0x308 RestartDpc       : _KDPC
+      +0x000 TargetInfoAsUlong : Uint4B
+      +0x000 Type             : UChar
+      +0x001 Importance       : UChar
+      +0x002 Number           : Uint2B
+      +0x008 DpcListEntry     : _SINGLE_LIST_ENTRY
+         +0x000 Next             : Ptr64 
+      +0x010 ProcessorHistory : Uint8B
+      +0x018 DeferredRoutine  : Ptr64 
+      +0x020 DeferredContext  : Ptr64 
+      +0x028 SystemArgument1  : Ptr64 
+      +0x030 SystemArgument2  : Ptr64 
+      +0x038 DpcData          : Ptr64 
+   +0x348 CommonBufferVAs  : Ptr64 
+   +0x350 CommonBufferSize : Uint4B
+   +0x354 CommonBufferBlocks : Uint4B
+   +0x358 UnitExtension    : Ptr64 
+   +0x360 DefaultTimeout   : Uint4B
+   +0x370 DeferredList     : <unnamed-tag>
+      +0x000 PauseDevice      : _RAID_DEFERRED_ELEMENT
+         +0x000 Header           : _RAID_DEFERRED_HEADER
+            +0x000 Link             : _SLIST_ENTRY
+               +0x000 Next             : Ptr64 
+            +0x010 Pool             : Int4B
+         +0x020 Type             : 
+            RaidDeferredTimerRequest = 0n1
+            RaidDeferredError = 0n2
+            RaidDeferredPause = 0n3
+            RaidDeferredResume = 0n4
+            RaidDeferredPauseDevice = 0n5
+            RaidDeferredResumeDevice = 0n6
+            RaidDeferredBusy = 0n7
+            RaidDeferredReady = 0n8
+            RaidDeferredDeviceBusy = 0n9
+            RaidDeferredDeviceReady = 0n10
+            RaidDeferredAdditionalTimerRequest = 0n11
+            RaidDeferredAsyncNotification = 0n12
+         +0x024 Address          : _STOR_SCSI_ADDRESS
+            +0x000 PathId           : UChar
+            +0x001 TargetId         : UChar
+            +0x002 Lun              : UChar
+            +0x003 Reserved         : UChar
+         +0x028 Timer            : <unnamed-tag>
+            +0x000 HwTimerRoutine   : Ptr64 
+            +0x008 Timeout          : Uint4B
+         +0x028 Error            : <unnamed-tag>
+            +0x000 Srb              : Ptr64 
+            +0x008 ErrorCode        : Uint4B
+            +0x00c UniqueId         : Uint4B
+            +0x010 FreeErrorInfo    : UChar
+         +0x028 Pause            : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 PauseDevice      : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 Busy             : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 DeviceBusy       : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 AdditionalTimer  : <unnamed-tag>
+            +0x000 StorTimer        : Ptr64 
+            +0x008 Timeout          : _LARGE_INTEGER
+               +0x000 LowPart          : Uint4B
+               +0x004 HighPart         : Int4B
+               +0x000 u                : <unnamed-tag>
+                  +0x000 LowPart          : Uint4B
+                  +0x004 HighPart         : Int4B
+               +0x000 QuadPart         : Int8B
+            +0x010 TolerableDelay   : Uint4B
+         +0x028 AsyncNotification : <unnamed-tag>
+            +0x000 StorAsyncNotify  : Ptr64 
+      +0x050 ResumeDevice     : _RAID_DEFERRED_ELEMENT
+         +0x000 Header           : _RAID_DEFERRED_HEADER
+            +0x000 Link             : _SLIST_ENTRY
+               +0x000 Next             : Ptr64 
+            +0x010 Pool             : Int4B
+         +0x020 Type             : 
+            RaidDeferredTimerRequest = 0n1
+            RaidDeferredError = 0n2
+            RaidDeferredPause = 0n3
+            RaidDeferredResume = 0n4
+            RaidDeferredPauseDevice = 0n5
+            RaidDeferredResumeDevice = 0n6
+            RaidDeferredBusy = 0n7
+            RaidDeferredReady = 0n8
+            RaidDeferredDeviceBusy = 0n9
+            RaidDeferredDeviceReady = 0n10
+            RaidDeferredAdditionalTimerRequest = 0n11
+            RaidDeferredAsyncNotification = 0n12
+         +0x024 Address          : _STOR_SCSI_ADDRESS
+            +0x000 PathId           : UChar
+            +0x001 TargetId         : UChar
+            +0x002 Lun              : UChar
+            +0x003 Reserved         : UChar
+         +0x028 Timer            : <unnamed-tag>
+            +0x000 HwTimerRoutine   : Ptr64 
+            +0x008 Timeout          : Uint4B
+         +0x028 Error            : <unnamed-tag>
+            +0x000 Srb              : Ptr64 
+            +0x008 ErrorCode        : Uint4B
+            +0x00c UniqueId         : Uint4B
+            +0x010 FreeErrorInfo    : UChar
+         +0x028 Pause            : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 PauseDevice      : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 Busy             : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 DeviceBusy       : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 AdditionalTimer  : <unnamed-tag>
+            +0x000 StorTimer        : Ptr64 
+            +0x008 Timeout          : _LARGE_INTEGER
+               +0x000 LowPart          : Uint4B
+               +0x004 HighPart         : Int4B
+               +0x000 u                : <unnamed-tag>
+                  +0x000 LowPart          : Uint4B
+                  +0x004 HighPart         : Int4B
+               +0x000 QuadPart         : Int8B
+            +0x010 TolerableDelay   : Uint4B
+         +0x028 AsyncNotification : <unnamed-tag>
+            +0x000 StorAsyncNotify  : Ptr64 
+      +0x0a0 DeviceBusy       : _RAID_DEFERRED_ELEMENT
+         +0x000 Header           : _RAID_DEFERRED_HEADER
+            +0x000 Link             : _SLIST_ENTRY
+               +0x000 Next             : Ptr64 
+            +0x010 Pool             : Int4B
+         +0x020 Type             : 
+            RaidDeferredTimerRequest = 0n1
+            RaidDeferredError = 0n2
+            RaidDeferredPause = 0n3
+            RaidDeferredResume = 0n4
+            RaidDeferredPauseDevice = 0n5
+            RaidDeferredResumeDevice = 0n6
+            RaidDeferredBusy = 0n7
+            RaidDeferredReady = 0n8
+            RaidDeferredDeviceBusy = 0n9
+            RaidDeferredDeviceReady = 0n10
+            RaidDeferredAdditionalTimerRequest = 0n11
+            RaidDeferredAsyncNotification = 0n12
+         +0x024 Address          : _STOR_SCSI_ADDRESS
+            +0x000 PathId           : UChar
+            +0x001 TargetId         : UChar
+            +0x002 Lun              : UChar
+            +0x003 Reserved         : UChar
+         +0x028 Timer            : <unnamed-tag>
+            +0x000 HwTimerRoutine   : Ptr64 
+            +0x008 Timeout          : Uint4B
+         +0x028 Error            : <unnamed-tag>
+            +0x000 Srb              : Ptr64 
+            +0x008 ErrorCode        : Uint4B
+            +0x00c UniqueId         : Uint4B
+            +0x010 FreeErrorInfo    : UChar
+         +0x028 Pause            : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 PauseDevice      : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 Busy             : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 DeviceBusy       : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 AdditionalTimer  : <unnamed-tag>
+            +0x000 StorTimer        : Ptr64 
+            +0x008 Timeout          : _LARGE_INTEGER
+               +0x000 LowPart          : Uint4B
+               +0x004 HighPart         : Int4B
+               +0x000 u                : <unnamed-tag>
+                  +0x000 LowPart          : Uint4B
+                  +0x004 HighPart         : Int4B
+               +0x000 QuadPart         : Int8B
+            +0x010 TolerableDelay   : Uint4B
+         +0x028 AsyncNotification : <unnamed-tag>
+            +0x000 StorAsyncNotify  : Ptr64 
+      +0x0f0 DeviceReady      : _RAID_DEFERRED_ELEMENT
+         +0x000 Header           : _RAID_DEFERRED_HEADER
+            +0x000 Link             : _SLIST_ENTRY
+               +0x000 Next             : Ptr64 
+            +0x010 Pool             : Int4B
+         +0x020 Type             : 
+            RaidDeferredTimerRequest = 0n1
+            RaidDeferredError = 0n2
+            RaidDeferredPause = 0n3
+            RaidDeferredResume = 0n4
+            RaidDeferredPauseDevice = 0n5
+            RaidDeferredResumeDevice = 0n6
+            RaidDeferredBusy = 0n7
+            RaidDeferredReady = 0n8
+            RaidDeferredDeviceBusy = 0n9
+            RaidDeferredDeviceReady = 0n10
+            RaidDeferredAdditionalTimerRequest = 0n11
+            RaidDeferredAsyncNotification = 0n12
+         +0x024 Address          : _STOR_SCSI_ADDRESS
+            +0x000 PathId           : UChar
+            +0x001 TargetId         : UChar
+            +0x002 Lun              : UChar
+            +0x003 Reserved         : UChar
+         +0x028 Timer            : <unnamed-tag>
+            +0x000 HwTimerRoutine   : Ptr64 
+            +0x008 Timeout          : Uint4B
+         +0x028 Error            : <unnamed-tag>
+            +0x000 Srb              : Ptr64 
+            +0x008 ErrorCode        : Uint4B
+            +0x00c UniqueId         : Uint4B
+            +0x010 FreeErrorInfo    : UChar
+         +0x028 Pause            : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 PauseDevice      : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 Busy             : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 DeviceBusy       : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 AdditionalTimer  : <unnamed-tag>
+            +0x000 StorTimer        : Ptr64 
+            +0x008 Timeout          : _LARGE_INTEGER
+               +0x000 LowPart          : Uint4B
+               +0x004 HighPart         : Int4B
+               +0x000 u                : <unnamed-tag>
+                  +0x000 LowPart          : Uint4B
+                  +0x004 HighPart         : Int4B
+               +0x000 QuadPart         : Int8B
+            +0x010 TolerableDelay   : Uint4B
+         +0x028 AsyncNotification : <unnamed-tag>
+            +0x000 StorAsyncNotify  : Ptr64 
+      +0x140 AsyncNotification : _RAID_DEFERRED_ELEMENT
+         +0x000 Header           : _RAID_DEFERRED_HEADER
+            +0x000 Link             : _SLIST_ENTRY
+               +0x000 Next             : Ptr64 
+            +0x010 Pool             : Int4B
+         +0x020 Type             : 
+            RaidDeferredTimerRequest = 0n1
+            RaidDeferredError = 0n2
+            RaidDeferredPause = 0n3
+            RaidDeferredResume = 0n4
+            RaidDeferredPauseDevice = 0n5
+            RaidDeferredResumeDevice = 0n6
+            RaidDeferredBusy = 0n7
+            RaidDeferredReady = 0n8
+            RaidDeferredDeviceBusy = 0n9
+            RaidDeferredDeviceReady = 0n10
+            RaidDeferredAdditionalTimerRequest = 0n11
+            RaidDeferredAsyncNotification = 0n12
+         +0x024 Address          : _STOR_SCSI_ADDRESS
+            +0x000 PathId           : UChar
+            +0x001 TargetId         : UChar
+            +0x002 Lun              : UChar
+            +0x003 Reserved         : UChar
+         +0x028 Timer            : <unnamed-tag>
+            +0x000 HwTimerRoutine   : Ptr64 
+            +0x008 Timeout          : Uint4B
+         +0x028 Error            : <unnamed-tag>
+            +0x000 Srb              : Ptr64 
+            +0x008 ErrorCode        : Uint4B
+            +0x00c UniqueId         : Uint4B
+            +0x010 FreeErrorInfo    : UChar
+         +0x028 Pause            : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 PauseDevice      : <unnamed-tag>
+            +0x000 Timeout          : Uint4B
+         +0x028 Busy             : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 DeviceBusy       : <unnamed-tag>
+            +0x000 RequestsToComplete : Uint4B
+         +0x028 AdditionalTimer  : <unnamed-tag>
+            +0x000 StorTimer        : Ptr64 
+            +0x008 Timeout          : _LARGE_INTEGER
+               +0x000 LowPart          : Uint4B
+               +0x004 HighPart         : Int4B
+               +0x000 u                : <unnamed-tag>
+                  +0x000 LowPart          : Uint4B
+                  +0x004 HighPart         : Int4B
+               +0x000 QuadPart         : Int8B
+            +0x010 TolerableDelay   : Uint4B
+         +0x028 AsyncNotification : <unnamed-tag>
+            +0x000 StorAsyncNotify  : Ptr64 
+   +0x500 ResetCount       : Int4B
+   +0x508 ResetResources   : _RAID_IO_RESOURCES
+      +0x000 QueueTag         : Uint4B
+      +0x008 SrbExtension     : Ptr64 
+      +0x010 Xrb              : Ptr64 
+      +0x018 SenseInfo        : Ptr64 
+   +0x528 ResetResourcesAcquired : Int4B
+   +0x52c SenseInfoSize    : UChar
+   +0x52d CallFreeDumpPtrSRB : UChar
+   +0x52e DumpPowerReady   : UChar
+   +0x52f StackDumpPowerReady : UChar
+   +0x530 PoFxRundownProtection : _EX_RUNDOWN_REF
+      +0x000 Count            : Uint8B
+      +0x000 Ptr              : Ptr64 
+   +0x538 PoFx             : Ptr64 
+   +0x540 D3ColdInterface  : _D3COLD_SUPPORT_INTERFACE
+      +0x000 Size             : Uint2B
+      +0x002 Version          : Uint2B
+      +0x008 Context          : Ptr64 
+      +0x010 InterfaceReference : Ptr64 
+      +0x018 InterfaceDereference : Ptr64 
+      +0x020 SetD3ColdSupport : Ptr64 
+      +0x028 GetIdleWakeInfo  : Ptr64 
+      +0x030 GetD3ColdCapability : Ptr64 
+      +0x038 GetBusDriverD3ColdSupport : Ptr64 
+      +0x040 GetLastTransitionStatus : Ptr64 
+   +0x588 PowerUpRequired  : Int4B
+   +0x58c PowerDownRequired : Int4B
+   +0x590 HierarchicalResetWorkItem : Ptr64 
+   +0x598 HierarchicalResetWorkItemTimeoutCountdown : Int4B
+   +0x59c HierarchicalResetAbortCount : Uint4B
+   +0x5a0 HierarchicalResetWorkItemSpinLock : Uint8B
+   +0x5a8 RegistryParameters : _RAID_UNIT_REGISTRY_PARAMETERS
+      +0x000 BusyRetryCount   : Uint4B
+      +0x004 QueueFullWaitIoPercentage : Uint4B
+      +0x008 BusyPauseTime    : Uint4B
+      +0x00c EnableLogoETW    : Uint4B
+      +0x010 DisableIdlePowerManagement : Uint4B
+      +0x014 MinimumIdleTimeoutInMS : Uint4B
+   +0x5c0 UnitAttributes   : _RAID_UNIT_ATTRIBUTES
+      +0x000 VmPassThroughLun : Pos 0, 1 Bit
+      +0x000 DeviceAttentionSupported : Pos 1, 1 Bit
+      +0x000 AsyncNotificationSupported : Pos 2, 1 Bit
+      +0x000 D3ColdNotSupported : Pos 3, 1 Bit
+      +0x000 DefaultWriteCacheEnabled : Pos 4, 1 Bit
+      +0x000 Reserved         : Pos 5, 27 Bits
+   +0x5c8 VmLunPnpInterfaceName : _UNICODE_STRING
+      +0x000 Length           : Uint2B
+      +0x002 MaximumLength    : Uint2B
+      +0x008 Buffer           : Ptr64 
+   +0x5d8 QuiesceDeviceWorkItem : _RAID_WORK_ITEM_CONTEXT
+      +0x000 WorkItem         : Ptr64 
+      +0x008 Irp              : Ptr64 
+   +0x5e8 StorAsyncNotify  : _STOR_ASYNC_NOTIFY_CONTEXT
+      +0x000 WorkItem         : Ptr64 
+      +0x008 Flags            : Uint8B
+      +0x010 InUse            : Uint4B
+   +0x600 PowerWorkItem    : _RAID_SHARED_WORK_ITEM_CONTEXT
+      +0x000 WorkItem         : Ptr64 
+      +0x008 Irp              : Ptr64 
+      +0x010 InUse            : Uint4B
+   +0x618 PendingPowerUpContext : <unnamed-tag>
+      +0x000 FStateTransition : UChar
+      +0x001 DStateTransition : UChar
+      +0x004 FState           : Uint4B
+      +0x008 PowerIrp         : Ptr64 
+   +0x630 PendingPowerUpListEntry : _SLIST_ENTRY
+      +0x000 Next             : Ptr64 
+   +0x640 SesPnpInterfaceName : _UNICODE_STRING
+      +0x000 Length           : Uint2B
+      +0x002 MaximumLength    : Uint2B
+      +0x008 Buffer           : Ptr64 
+   +0x650 IoCountDelayedByLatencyCap : Uint8B
